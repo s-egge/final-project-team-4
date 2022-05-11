@@ -28,8 +28,9 @@
     - [ ] Score counter 
     - [ ] Fly-swatter follows mouse 
     - [ ] Bug sprites 
+    - [ ] Different bug paths
     - [ ] Clicking bug-sprites adds points 
-    - [ ] Some bugs generate faster adn are worth more points 
+    - [ ] Some bugs generate faster and are worth more points 
     - [ ] X number of bugs on the picnic food initiates a lose screen 
     - [ ] Lose screen 
         - [ ] Didn't make the scoreboard message 
