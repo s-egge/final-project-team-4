@@ -35,6 +35,10 @@ class Bug {
     }
     move(){
         this.y += this.speedX
+        this.x += (Math.random() *4 +1)
+        if (this.x >= canvas.width - 20) {
+            this.x = 0
+        }
     }
     spawnBug(){
         c.fillStyle = '#4B3A2F'
