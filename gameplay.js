@@ -31,20 +31,19 @@ class Bug {
     constructor(){
         this.x = (Math.random() * (canvas.width - 100)) 
         this.y = 0
-        this.speedX = Math.random() * 3 + 1
+        this.speedY = Math.random() * 3 + 1
+        
     }
     move(){
-        this.y += this.speedX
-        this.x += (Math.random() *4 +1)
-        if (this.x >= canvas.width - 20) {
-            this.x = 0
-        }
+        this.y += this.speedY
+        this.x += Math.sin(this.y/ 50)
     }
     spawnBug(){
         c.fillStyle = '#4B3A2F'
         c.beginPath()
         c.arc(this.x, this.y, 25, 0, Math.PI * 2)
         c.fill()
+        
     }
 }
 //creates a new bug object and pushes it into the main bug array
@@ -83,6 +82,7 @@ function animate(){
     }else{
         clearInterval(interval)
     }
+    
 }
 animate()
 
@@ -97,7 +97,7 @@ function onClickBug(event){
             score += 10
         }
     }
-    if(score % 100 === 0){
+    if(score % 100 === 0 && health > 0){
         spawnInterval -= 50
         clearInterval(interval)
         interval = setInterval(createBug, spawnInterval)
@@ -110,5 +110,5 @@ function isPointValid(bug, x, y){
     var bugY = bug.y
     var radius = 25
     var d = Math.sqrt(Math.pow((x - bugX), 2) + Math.pow((y - bugY), 2))
-    return(d <= radius*bug.speedX)
+    return(d <= radius*bug.speedY)
 }
