@@ -18,3 +18,63 @@ body {
     top:0px;
     right:0px;
 }
+
+
+/* ---------Index page styling------------- */
+
+body#homepage{
+    background-color: #b6eca2;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 0;
+}
+
+#game-name{
+    align-self: center;
+    padding: 30px;
+}
+
+#picnic-div{
+    width: 30%;
+    display: flex;
+    align-self: center;
+    padding: 40px;
+}
+
+#picnic-img{
+    width: 100%;
+}
+
+.button-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-top: 30px;
+    max-width: 95vw;
+}
+
+button{
+    margin: 10px;
+    margin-left: 30px;
+    padding: 10px;
+    background-color: #F6FF6B;
+    border-radius: 10%;
+    border: 1px solid black;
+    font-weight: bold;
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+button:hover{
+    transform:scale(140%);
+}
+
+.footer{
+    margin-top: 100px;
+    display: block;
+    background: url('../images/plaid.jpg');
+    background-repeat: repeat-x;
+    background-size: contain;
+    width: 100vw;
+    height: 70px;
+    align-self: flex-end;
+}
