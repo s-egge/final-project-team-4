@@ -78,3 +78,9 @@ button:hover{
     height: 70px;
     align-self: flex-end;
 }
+
+.pause_button {
+    position:absolute;
+    top:100px;
+    right:50px;
+}
