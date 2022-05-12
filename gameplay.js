@@ -36,7 +36,7 @@ class Bug {
     }
     move(){
         this.y += this.speedY
-        this.x += Math.sin(this.y/ 50)
+        this.x += Math.sin(this.y/50)
     }
     spawnBug(){
         c.fillStyle = '#4B3A2F'
