@@ -10,18 +10,15 @@ var score = 0
 var health = 10
 
 
-
 //draws score in top right
-function drawScore(){
-    c.font = "30px Arial"
-    c.fillStyle = "#000000"
-    c.fillText("Score: "+score, canvas.width - 200, 40)
+
+function drawScore() {
+    document.getElementById('score_text').innerHTML = (`Score: ${score}`)
 }
+
 //draws health in top left
-function drawHealth(){
-    c.font = "30px Arial"
-    c.fillStyle = "#000000"
-    c.fillText("Health: "+health, 20, 40)
+function drawHealth() {
+    document.getElementById('health_text').innerHTML = (`Health: ${health}`)
 }
 
 drawHealth()
@@ -38,6 +35,10 @@ class Bug {
     }
     move(){
         this.y += this.speedX
+        this.x += (Math.random() *4 +1)
+        if (this.x >= canvas.width - 20) {
+            this.x = 0
+        }
     }
     spawnBug(){
         c.fillStyle = '#4B3A2F'
@@ -86,7 +87,10 @@ function animate(){
 animate()
 
 //click event listener
-canvas.addEventListener('click', function(event){
+document.addEventListener('click', onClickBug)
+
+function onClickBug(event){
+    console.log(event.x, event.y)
     for(var i = 0; i < bugArray.length; i++){
         if(isPointValid(bugArray[i], event.x, event.y)){
             bugArray.splice(i, 1)
@@ -98,7 +102,7 @@ canvas.addEventListener('click', function(event){
         clearInterval(interval)
         interval = setInterval(createBug, spawnInterval)
     }
-})
+}
 
 //will check if point clicked is within bug object area, is scaled with speed (slower = smaller hitbox)
 function isPointValid(bug, x, y){
