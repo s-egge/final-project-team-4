@@ -5,7 +5,7 @@ var guideButton = document.getElementById('guide-button')
 var guideModal = document.getElementById('guide-modal')
 
 startButton.addEventListener('click', function(){
-    window.location.href='/gameplay.html'
+    window.location.href='./gameplay.html'
 })
 
 guideButton.addEventListener('click', function(){
