@@ -72,6 +72,7 @@ button{
 
 button:hover{
     transform:scale(140%);
+    cursor: pointer;
 }
 
 .footer{
@@ -159,4 +160,12 @@ button:hover{
 
 .close-guide-button:hover{
     transform: scale(110%);
+}
+
+#game_paused_screen {
+    position: fixed;
+    top:50%;
+    left:43%;
+    font-weight: bold;
+    font-size:60px;
 }
