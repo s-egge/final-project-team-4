@@ -7,7 +7,9 @@ canvas.height = window.innerHeight
 var bugArray = []
 
 var score = 0
-var health = 10
+var health = 9999
+
+var game_paused = false
 
 
 //draws score in top right
@@ -31,44 +33,58 @@ class Bug {
     constructor(){
         this.x = (Math.random() * (canvas.width - 100)) 
         this.y = 0
-        this.speedX = Math.random() * 3 + 1
+        this.speedY = Math.random() * 3 + 1
+        
     }
     move(){
-        this.y += this.speedX
-        this.x += (Math.random() *4 +1)
-        if (this.x >= canvas.width - 20) {
-            this.x = 0
-        }
+        this.y += this.speedY
+        this.x += Math.sin(this.y/ 50)
     }
     spawnBug(){
         c.fillStyle = '#4B3A2F'
         c.beginPath()
         c.arc(this.x, this.y, 25, 0, Math.PI * 2)
         c.fill()
+        
     }
 }
 //creates a new bug object and pushes it into the main bug array
 function createBug() {
-    var bug = new Bug()
-    bugArray.push(bug)
-    bug.spawnBug()
+    if (!(game_paused)) {
+        var bug = new Bug()
+        bugArray.push(bug)
+        bug.spawnBug()
+    }
 }
-createBug()
+
+// changes game state based on pause button
+var pause_button = document.getElementsByClassName('pause_button')[0]
+// if game is paused, unpause it, if game is unpaused, pause it
+pause_button.addEventListener('click', function() {
+    if (game_paused) {
+        game_paused = false
+    } else {
+        game_paused = true
+    }
+})
+
 //base interval + interval object that needs to be reset every interval change
 var spawnInterval = 1000
 var interval = setInterval(createBug, spawnInterval)
 
 
+
 //will move each bug in the bug array, and delete the bug if it reaches the bottom of the screen
 function moveBugs(){
-    for(var i = 0; i < bugArray.length; i++){
-        bugArray[i].move()
-        bugArray[i].spawnBug()
-        if(bugArray[i].y + 30 >= window.innerHeight){
-            health -= 1
-            bugArray.splice(i, 1)
+    if (!(game_paused)) {
+        for(var i = 0; i < bugArray.length; i++){
+            bugArray[i].move()
+            bugArray[i].spawnBug()
+            if(bugArray[i].y + 30 >= window.innerHeight){
+                health -= 1
+                bugArray.splice(i, 1)
+            }
         }
-
     }
 }
 
@@ -83,21 +99,22 @@ function animate(){
     }else{
         clearInterval(interval)
     }
+    
 }
+
 animate()
 
 //click event listener
 document.addEventListener('click', onClickBug)
 
 function onClickBug(event){
-    console.log(event.x, event.y)
     for(var i = 0; i < bugArray.length; i++){
         if(isPointValid(bugArray[i], event.x, event.y)){
             bugArray.splice(i, 1)
             score += 10
         }
     }
-    if(score % 100 === 0){
+    if(score % 100 === 0 && health > 0){
         spawnInterval -= 50
         clearInterval(interval)
         interval = setInterval(createBug, spawnInterval)
@@ -110,5 +127,5 @@ function isPointValid(bug, x, y){
     var bugY = bug.y
     var radius = 25
     var d = Math.sqrt(Math.pow((x - bugX), 2) + Math.pow((y - bugY), 2))
-    return(d <= radius*bug.speedX)
+    return(d <= radius*bug.speedY)
 }
