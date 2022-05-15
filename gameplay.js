@@ -10,6 +10,7 @@ var score = 0
 var health = 9999
 
 var game_paused = false
+var window_focused = true
 
 
 //draws score in top right
@@ -60,13 +61,17 @@ function createBug() {
 // changes game state based on pause button
 var pause_button = document.getElementsByClassName('pause_button')[0]
 // if game is paused, unpause it, if game is unpaused, pause it
-pause_button.addEventListener('click', function() {
+pause_button.addEventListener('click', toggle_game_paused)
+
+function toggle_game_paused() {
     if (game_paused) {
         game_paused = false
+        document.getElementById('game_paused_screen').classList.add('hidden')
     } else {
         game_paused = true
+        document.getElementById('game_paused_screen').classList.remove('hidden')
     }
-})
+}
 
 //base interval + interval object that needs to be reset every interval change
 var spawnInterval = 1000
@@ -129,3 +134,21 @@ function isPointValid(bug, x, y){
     var d = Math.sqrt(Math.pow((x - bugX), 2) + Math.pow((y - bugY), 2))
     return(d <= radius*bug.speedY)
 }
+
+window.onfocus = function() {
+    window_focused = true
+}
+
+window.onblur = function() {
+    window_focused = false
+}
+
+function pause_if_unfocused() {
+    if (!(window_focused)) {
+        if (!(game_paused)) {
+            toggle_game_paused()
+        }
+    }
+}
+
+var check_focus_interval = setInterval(pause_if_unfocused, 500)
