@@ -6,6 +6,7 @@ body {
     margin: 0px;
     padding: 0px;
     background: #b6eca2;
+    cursor: url('./images/swatter_32x32.png'), crosshair;
 }
 
 #score_text {
