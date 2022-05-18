@@ -50,6 +50,9 @@ class Bug {
 
 var spiderArr = []
 
+/**
+ * Spider class. Includes functionality to spawn spiders using c.drawImage, move the spider
+ */
 class Spider {
     constructor(){
         this.x = (Math.random() * (canvas.width - 100))
@@ -58,7 +61,6 @@ class Spider {
         this.speedY = Math.random() * 2 + 1
         this.img = new Image()
         this.img.src = './images/spritesheet.png'
-        this.frame = 4
         this.framesDrawn = 0
     }
     move(){
@@ -132,6 +134,8 @@ function moveBugs(){
     }
 }
 
+
+//functions like moveBugs, but with the added FPS counter that will shift the animation 16 pixels to the right every 20 frames
 function moveSpiders(){
     if(!game_paused){
         for(var i = 0; i < spiderArr.length; i++){
@@ -142,8 +146,8 @@ function moveSpiders(){
                 spiderArr.splice(i, 1)
                 
             }
-            spiderArr[i].framesDrawn++
-            if(spiderArr[i].framesDrawn > 32){
+            
+            if(spiderArr[i].framesDrawn > 20){
                 spiderArr[i].sX += 16
                 if(spiderArr[i].sX > 48){
                     spiderArr[i].sX = 0
