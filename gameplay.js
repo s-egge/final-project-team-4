@@ -85,9 +85,11 @@ class Spider {
 
 
 function createSpider(){
-    var spider = new Spider()
-    spiderArr.push(spider)
-    spider.spawnSpider()
+    if (!(game_paused)) {
+        var spider = new Spider()
+        spiderArr.push(spider)
+        spider.spawnSpider()
+    }
 }
 createSpider()
 // creates a new bug object and pushes it into the main bug array
