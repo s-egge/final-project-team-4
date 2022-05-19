@@ -6,6 +6,7 @@ body {
     margin: 0px;
     padding: 0px;
     background: #b6eca2;
+    cursor: url('./images/swatter_32x32.png'), crosshair;
 }
 
 #score_text {
@@ -72,6 +73,7 @@ button{
 
 button:hover{
     transform:scale(140%);
+    cursor: pointer;
 }
 
 .footer{
@@ -106,7 +108,7 @@ button:hover{
     background-color: rgba(0, 0, 0, 0.70);
 }
 
-#guide-modal{
+.modal-skeleton{
     position: absolute;
     top: 0;
     bottom: 0;
@@ -115,7 +117,7 @@ button:hover{
     z-index: 2;
 }
 
-.guide-modal-contents{
+.modal-contents{
     width: 500px;
     height: 550px;
     background-color: #F6FF6B;
@@ -127,28 +129,28 @@ button:hover{
     justify-content: space-between;
 }
 
-.guide-header h3{
+.modal-header h3{
     margin: 0px;
 }
 
-.guide-header{
-    /*background-color: #b6eca2;*/
+.modal-header{
     border-bottom: 1px solid black;
     background-color: #b6eca2;
     border-top-left-radius: 45px;
     border-top-right-radius: 45px;
     padding: 10px;
-    padding-left: 25%;
+    padding-left: 30%;
     font-size: 30px;
 
 }
 
-.guide-body{
+.modal-body{
     padding-left: 10px;
+    padding-right: 10px;
     font-size: 16px;
 }
 
-.close-guide-button{
+.close-modal-button{
     width: 20%;
     background-color: #b6eca2;
     align-self: flex-end;
@@ -157,6 +159,46 @@ button:hover{
     border-radius: 10px;
 }
 
-.close-guide-button:hover{
+.close-modal-button:hover{
     transform: scale(110%);
+}
+
+#game_paused_screen {
+    position: fixed;
+    top:50%;
+    left:43%;
+    font-weight: bold;
+    font-size:60px;
+}
+
+/*--------------Leaderboard Table Styling----------*/
+
+
+
+table{
+    border-collapse: collapse;
+    border: 3px solid black;
+    background-color: #b6eca2;
+    width: 100%;
+}
+
+.table-header{
+    border: 3px solid black;
+}
+
+.table-header > th{
+    border: 3px solid black;
+    font-size: 20px;
+}
+
+.score-entry{
+    background-color: #e7e7e7;
+    border: 1px solid black;
+    font-size: 18px;
+}
+
+.score-entry > td{
+    padding: 6px;
+    text-align: center;
+    border: 1px solid black;
 }
