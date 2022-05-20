@@ -110,9 +110,11 @@ function toggle_game_paused() {
     if (game_paused) {
         game_paused = false
         document.getElementById('game_paused_screen').classList.add('hidden')
+        document.querySelector(".play-pause-img").src = "./images/pause.png"
     } else {
         game_paused = true
         document.getElementById('game_paused_screen').classList.remove('hidden')
+        document.querySelector(".play-pause-img").src = "./images/play.png"
     }
 }
 
