@@ -32,7 +32,7 @@ drawScore()
  */
 class Bug {
     constructor(){
-        this.x = (Math.random() * (canvas.width - 100)) 
+        this.x = (Math.random() * (canvas.width - 100))
         this.y = 0
         this.speedY = Math.random() * 3 + 1
     }
@@ -56,12 +56,17 @@ var spiderArr = []
 class Spider {
     constructor(){
         this.x = (Math.random() * (canvas.width - 100))
-        this.sX = 0 
+        this.sX = 0
         this.y = 10
         this.speedY = Math.random() * 2 + 1
         this.img = new Image()
         this.img.src = './images/spritesheet.png'
         this.framesDrawn = 0
+    }
+    destructor(){
+      this.img.src = './images/smoosh_16x64.png'
+      this.sX = 0
+      this.framesDrawn = 0
     }
     move(){
         this.y += this.speedY
@@ -70,7 +75,7 @@ class Spider {
     }
     spawnSpider(){
         c.drawImage(
-            this.img, 
+            this.img,
             this.sX,
             0,
             this.img.width / 4,
@@ -92,6 +97,17 @@ function createSpider(){
     }
 }
 createSpider()
+
+// onClickSpider() calls this function to generate smoosh anim
+function killSpider(spider, x, y){
+    // Kill spider animation change
+    if(spider.framesDrawn > 10){
+      spider.sX += 16
+      if(spider.sX > 48){
+        spider.sX = 0
+    }
+  }
+}
 // creates a new bug object and pushes it into the main bug array
 function createBug() {
     if (!(game_paused)) {
@@ -110,11 +126,11 @@ function toggle_game_paused() {
     if (game_paused) {
         game_paused = false
         document.getElementById('game_paused_screen').classList.add('hidden')
-        document.querySelector(".play-pause-img").src = "./images/pause.png"
+        document.querySelector(".play-pause-img").src = "./images/pause_white.png"
     } else {
         game_paused = true
         document.getElementById('game_paused_screen').classList.remove('hidden')
-        document.querySelector(".play-pause-img").src = "./images/play.png"
+        document.querySelector(".play-pause-img").src = "./images/play_white.png"
     }
 }
 
@@ -148,9 +164,9 @@ function moveSpiders(){
             if(spiderArr[i].y + 16 >= window.innerHeight){
                 health -= 1
                 spiderArr.splice(i, 1)
-                
+
             }
-            
+
             if(spiderArr[i].framesDrawn > 20){
                 spiderArr[i].sX += 16
                 if(spiderArr[i].sX > 48){
@@ -199,6 +215,8 @@ function onClickSpider(event){
     console.log(event.x, event.y)
     for(var i = 0; i < spiderArr.length; i++){
         if(isSpiderValid(spiderArr[i], event.x, event.y)){
+            //testing kill spider funct
+            // killSpider(spiderArr[i], event.x, event.y))
             spiderArr.splice(i, 1)
             score += 10
         }
