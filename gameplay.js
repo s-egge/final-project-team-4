@@ -12,6 +12,11 @@ var health = 9999
 var game_paused = false
 var window_focused = true
 
+var homeButton = document.getElementById('home-button')
+
+homeButton.addEventListener('click', function(){
+    window.location.href='./index.html'
+})
 
 //draws score in top right
 
