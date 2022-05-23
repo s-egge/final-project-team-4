@@ -27,77 +27,64 @@ function drawHealth() {
 drawHealth()
 drawScore()
 
-/**
- * Bug class, with some functionality such as moving and spawning. Also includes random x spawn.
- */
-class Bug {
-    constructor(){
-        this.x = (Math.random() * (canvas.width - 100)) 
-        this.y = 0
-        this.speedY = Math.random() * 3 + 1
-    }
-    move(){
-        this.y += this.speedY
-        this.x += Math.sin(this.y/ 50)
-    }
-    spawnBug(){
-        c.fillStyle = '#4B3A2F'
-        c.beginPath()
-        c.arc(this.x, this.y, 25, 0, Math.PI * 2)
-        c.fill()
-    }
+//Spider object
+var Spider = {
+    imageSrc: "./images/spider_spritesheet.png",
+    widthScale: .5,
+    heightScale: 2.5,
+    totalFrames: 4,
+    sX_multiplier: 16
 }
 
-var spiderArr = []
-
 /**
- * Spider class. Includes functionality to spawn spiders using c.drawImage, move the spider
+ * Main bug class. Abstraction allows for input of different insect objects.
  */
-class Spider {
-    constructor(){
+class Bug {
+    constructor({ imageSrc, widthScale, heightScale, totalFrames, sX_multiplier }){
         this.x = (Math.random() * (canvas.width - 100))
-        this.sX = 0 
+        this.sX = 0
         this.y = 10
         this.speedY = Math.random() * 2 + 1
         this.img = new Image()
-        this.img.src = './images/spritesheet.png'
+        this.img.src = imageSrc
         this.framesDrawn = 0
+
+        this.widthScale = widthScale
+        this.heightScale = heightScale
+        this.totalFrames = totalFrames
+        this.sX_multiplier = sX_multiplier
+    }
+    destructor(){
+      this.img.src = './images/smoosh_16x64.png'
+      this.sX = 0
+      this.framesDrawn = 0
     }
     move(){
         this.y += this.speedY
         this.x += Math.sin(this.y/50)
         this.framesDrawn++
     }
-    spawnSpider(){
+    spawnBug(){
         c.drawImage(
-            this.img, 
+            this.img,
             this.sX,
             0,
-            this.img.width / 4,
+            this.img.width / this.totalFrames,
             this.img.height,
             this.x,
             this.y,
-            (this.img.width * .5),
-            (this.img.height * 2.5),
+            (this.img.width * this.widthScale),
+            (this.img.height * this.heightScale),
         )
     }
 }
 
-
-function createSpider(){
-    if (!(game_paused)) {
-        var spider = new Spider()
-        spiderArr.push(spider)
-        spider.spawnSpider()
-    }
-}
-createSpider()
 // creates a new bug object and pushes it into the main bug array
-function createBug() {
+function createBug(insect) {
     if (!(game_paused)) {
-        var bug = new Bug()
-        bugArray.push(bug)
-        bug.spawnBug()
+        var i = new Bug(Spider)
+        bugArray.push(i)
+        i.spawnBug()
     }
 }
 
@@ -110,52 +97,45 @@ function toggle_game_paused() {
     if (game_paused) {
         game_paused = false
         document.getElementById('game_paused_screen').classList.add('hidden')
+        document.querySelector(".play-pause-img").src = "./images/pause_white.png"
     } else {
         game_paused = true
         document.getElementById('game_paused_screen').classList.remove('hidden')
+        document.querySelector(".play-pause-img").src = "./images/play_white.png"
     }
 }
 
 //base interval + interval object that needs to be reset every interval change
 var spawnInterval = 1000
-var interval = setInterval(createSpider, spawnInterval)
+var interval = setInterval(createBug, spawnInterval)
 
 
 
-//will move each bug in the bug array, and delete the bug if it reaches the bottom of the screen
+/**
+ * Will move each bug in the bug array, and delete the bug if it reaches the bottom of the screen
+ * This function will also animate the bugs by increasing bug.sX. 
+ */
 function moveBugs(){
     if (!(game_paused)) {
         for(var i = 0; i < bugArray.length; i++){
             bugArray[i].move()
             bugArray[i].spawnBug()
+            
+            if(bugArray[i].framesDrawn > 20){
+                bugArray[i].sX += bugArray[i].sX_multiplier
+                if(bugArray[i].sX > (bugArray[i].sX_multiplier * (bugArray[i].totalFrames - 1))){
+                    console.log((bugArray[i].sX_multiplier * (bugArray[i].totalFrames - 1)))
+                    bugArray[i].sX = 0
+                    
+                }
+                bugArray[i].framesDrawn = 0
+            }
             if(bugArray[i].y + 30 >= window.innerHeight){
                 health -= 1
                 bugArray.splice(i, 1)
             }
-        }
-    }
-}
-
-
-//functions like moveBugs, but with the added FPS counter that will shift the animation 16 pixels to the right every 20 frames
-function moveSpiders(){
-    if(!game_paused){
-        for(var i = 0; i < spiderArr.length; i++){
-            spiderArr[i].move()
-            spiderArr[i].spawnSpider()
-            if(spiderArr[i].y + 16 >= window.innerHeight){
-                health -= 1
-                spiderArr.splice(i, 1)
-                
-            }
             
-            if(spiderArr[i].framesDrawn > 20){
-                spiderArr[i].sX += 16
-                if(spiderArr[i].sX > 48){
-                    spiderArr[i].sX = 0
-                }
-                spiderArr[i].framesDrawn = 0
-            }
+            
         }
     }
 }
@@ -164,7 +144,7 @@ function moveSpiders(){
 // the main animation function
 function animate(){
     c.clearRect(0, 0, canvas.width, canvas.height)
-    moveSpiders()
+    moveBugs()
     drawHealth()
     drawScore()
     if(health > 0) {
@@ -177,8 +157,9 @@ function animate(){
 animate()
 
 //click event listener
-document.addEventListener('click', onClickSpider)
+document.addEventListener('click', onClickBug)
 
+//Main click event function. Calls isPointValid to check whether click hits a bug, and resets spawn interval if score hits a certain thershold
 function onClickBug(event){
     for(var i = 0; i < bugArray.length; i++){
         if(isPointValid(bugArray[i], event.x, event.y)){
@@ -186,42 +167,20 @@ function onClickBug(event){
             score += 10
         }
     }
-    if(score % 100 === 0 && health > 0){
+    if((score % 100 === 0 && score !== 0) && health > 0){
         spawnInterval -= 50
         clearInterval(interval)
         interval = setInterval(createBug, spawnInterval)
     }
 }
 
-function onClickSpider(event){
-    console.log(event.x, event.y)
-    for(var i = 0; i < spiderArr.length; i++){
-        if(isSpiderValid(spiderArr[i], event.x, event.y)){
-            spiderArr.splice(i, 1)
-            score += 10
-        }
-    }
-    if(score % 100 === 0 && health > 0){
-        spawnInterval -= 50
-        clearInterval(interval)
-        interval = setInterval(createSpider, spawnInterval)
-    }
-}
 
-//will check if point clicked is within bug object area, is scaled with speed (slower = smaller hitbox)
+//uses distance formula to determine if point is within bugs radius
 function isPointValid(bug, x, y){
-    var bugX = bug.x
+    var bugX = bug.x + bug.sX
     var bugY = bug.y
-    var radius = 25
-    var d = Math.sqrt(Math.pow((x - bugX), 2) + Math.pow((y - bugY), 2))
-    return(d <= radius*bug.speedY)
-}
-
-function isSpiderValid(spider, x, y){
-    var spiderX = spider.x + spider.sX
-    var spiderY = spider.y
     var radius = 50
-    var d = Math.sqrt(Math.pow((x - spiderX), 2) + Math.pow((y - spiderY), 2))
+    var d = Math.sqrt(Math.pow((x - bugX), 2) + Math.pow((y - bugY), 2))
     return(d <= radius)
 }
 
