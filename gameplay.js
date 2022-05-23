@@ -42,7 +42,7 @@ var Spider = {
 class Bug {
     constructor({ imageSrc, widthScale, heightScale, totalFrames, sX_multiplier }){
         this.x = (Math.random() * (canvas.width - 100))
-        this.sX = 0 
+        this.sX = 0
         this.y = 10
         this.speedY = Math.random() * 2 + 1
         this.img = new Image()
@@ -54,6 +54,11 @@ class Bug {
         this.totalFrames = totalFrames
         this.sX_multiplier = sX_multiplier
     }
+    destructor(){
+      this.img.src = './images/smoosh_16x64.png'
+      this.sX = 0
+      this.framesDrawn = 0
+    }
     move(){
         this.y += this.speedY
         this.x += Math.sin(this.y/50)
@@ -61,7 +66,7 @@ class Bug {
     }
     spawnBug(){
         c.drawImage(
-            this.img, 
+            this.img,
             this.sX,
             0,
             this.img.width / this.totalFrames,
@@ -92,11 +97,11 @@ function toggle_game_paused() {
     if (game_paused) {
         game_paused = false
         document.getElementById('game_paused_screen').classList.add('hidden')
-        document.querySelector(".play-pause-img").src = "./images/pause.png"
+        document.querySelector(".play-pause-img").src = "./images/pause_white.png"
     } else {
         game_paused = true
         document.getElementById('game_paused_screen').classList.remove('hidden')
-        document.querySelector(".play-pause-img").src = "./images/play.png"
+        document.querySelector(".play-pause-img").src = "./images/play_white.png"
     }
 }
 
