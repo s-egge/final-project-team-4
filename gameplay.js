@@ -33,14 +33,26 @@ var Spider = {
     widthScale: .5,
     heightScale: 2.5,
     totalFrames: 4,
-    sX_multiplier: 16
+    column: 0,
+    sX_multiplier: 16,
+    radius: 50
+}
+
+var Ladybug = {
+    imageSrc: "./images/__red_ladybird_fly.png",
+    widthScale: .015,
+    heightScale: .09,
+    totalFrames: 4,
+    column: 750,
+    sX_multiplier: 1050,
+    radius: 100
 }
 
 /**
  * Main bug class. Abstraction allows for input of different insect objects.
  */
 class Bug {
-    constructor({ imageSrc, widthScale, heightScale, totalFrames, sX_multiplier }){
+    constructor({ imageSrc, widthScale, heightScale, totalFrames, column, sX_multiplier }){
         this.x = (Math.random() * (canvas.width - 100))
         this.sX = 0
         this.y = 10
@@ -48,7 +60,8 @@ class Bug {
         this.img = new Image()
         this.img.src = imageSrc
         this.framesDrawn = 0
-
+        
+        this.column = column
         this.widthScale = widthScale
         this.heightScale = heightScale
         this.totalFrames = totalFrames
@@ -68,7 +81,7 @@ class Bug {
         c.drawImage(
             this.img,
             this.sX,
-            0,
+            this.column,
             this.img.width / this.totalFrames,
             this.img.height,
             this.x,
@@ -79,10 +92,16 @@ class Bug {
     }
 }
 
+const bugType = [Spider, Ladybug]
+
+
 // creates a new bug object and pushes it into the main bug array
-function createBug(insect) {
+function createBug() {
     if (!(game_paused)) {
-        var i = new Bug(Spider)
+        var x = Math.floor(Math.random() * bugType.length)
+        console.log("X: ", x)
+        console.log("bugType[i]: ", bugType[x])
+        var i = new Bug(bugType[x])
         bugArray.push(i)
         i.spawnBug()
     }
@@ -161,6 +180,7 @@ document.addEventListener('click', onClickBug)
 
 //Main click event function. Calls isPointValid to check whether click hits a bug, and resets spawn interval if score hits a certain thershold
 function onClickBug(event){
+    console.log(event.x + ", " + event.y)
     for(var i = 0; i < bugArray.length; i++){
         if(isPointValid(bugArray[i], event.x, event.y)){
             bugArray.splice(i, 1)
@@ -177,9 +197,10 @@ function onClickBug(event){
 
 //uses distance formula to determine if point is within bugs radius
 function isPointValid(bug, x, y){
-    var bugX = bug.x + bug.sX
-    var bugY = bug.y
-    var radius = 50
+    var bugX = bug.x
+    var bugY = bug.y 
+    var radius = 100
+    console.log("bug X: " + bugX + ", bug Y: " + bugY)
     var d = Math.sqrt(Math.pow((x - bugX), 2) + Math.pow((y - bugY), 2))
     return(d <= radius)
 }
