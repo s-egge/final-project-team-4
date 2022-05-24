@@ -39,29 +39,34 @@ var Spider = {
     widthScale: .5,
     heightScale: 2.5,
     totalFrames: 4,
-    sX_multiplier: 16
-}
-//Smoosh object
-var SpiderSmoosh = {
-    imageSrc: "./images/smoosh_spritesheet.png",
-    widthScale: .5,
-    heightScale: 2.5,
-    totalFrames: 4,
     sX_multiplier: 16,
+    animSpeed: 16
+}
+/* Smoosh object. width/height Scale is weighted depending on frames in
+spritesheet (16h x 128w). i.e., width scale is 0.375 because overall spritesheet
+width is 128. 128 * 0.375 = 48 (px), height scale is 3. 3 * 16 = 48 (px). Square. */
+var SpiderSmoosh = {
+    imageSrc: "./images/smoosh_spritesheet2.png",
+    widthScale: 0.375,
+    heightScale: 3,
+    totalFrames: 8,
+    sX_multiplier: 16,
+    animSpeed: 3
 }
 /*
  * Main Smoosh class. Only one smoosh type right now. input smooshX,Y input from
  * bug on the click event
  */
 class Smoosh {
-    constructor({ imageSrc, widthScale, heightScale, totalFrames, sX_multiplier, smooshX, smooshY }){
-        this.smooshX = smooshX
-        this.smooshY = smooshY
+    constructor({ imageSrc, widthScale, heightScale, totalFrames, sX_multiplier, animSpeed}){
+        this.smooshX = 0
+        this.smooshY = 0
         this.sX = 0
 
         this.img = new Image()
         this.img.src = imageSrc
         this.framesDrawn = 0
+        this.animSpeed = animSpeed //frames per step through spritesheet
 
         this.widthScale = widthScale
         this.heightScale = heightScale
@@ -90,7 +95,7 @@ class Smoosh {
  * Main bug class. Abstraction allows for input of different insect objects.
  */
 class Bug {
-    constructor({ imageSrc, widthScale, heightScale, totalFrames, sX_multiplier }){
+    constructor({ imageSrc, widthScale, heightScale, totalFrames, sX_multiplier, animSpeed }){
         this.x = (Math.random() * (canvas.width - 100))
         this.sX = 0
         this.y = 10
@@ -98,6 +103,7 @@ class Bug {
         this.img = new Image()
         this.img.src = imageSrc
         this.framesDrawn = 0
+        this.animSpeed = animSpeed //frames per step through spritesheet
 
         this.widthScale = widthScale
         this.heightScale = heightScale
@@ -143,7 +149,7 @@ function createSmoosh(x, y) {
         s.smooshX = x
         s.smooshY = y
         smooshArray.push(s)
-        // console.log("==smooshArray count: ", smooshArray.length);
+        console.log("==smooshArray count: ", smooshArray.length);
         s.drawSmoosh()
     }
 }
@@ -181,7 +187,7 @@ function moveBugs(){
             bugArray[i].move()
             bugArray[i].spawnBug()
 
-            if(bugArray[i].framesDrawn > 20){
+            if(bugArray[i].framesDrawn > bugArray[i].animSpeed){
                 bugArray[i].sX += bugArray[i].sX_multiplier
                 if(bugArray[i].sX > (bugArray[i].sX_multiplier * (bugArray[i].totalFrames - 1))){
                     // console.log((bugArray[i].sX_multiplier * (bugArray[i].totalFrames - 1)))
@@ -205,16 +211,12 @@ function animSmoosh(){
         for(var i = 0; i < smooshArray.length; i++){
             smooshArray[i].anim()
             smooshArray[i].drawSmoosh()
-            if(smooshArray[i].framesDrawn > 2){
+            if(smooshArray[i].framesDrawn > smooshArray[i].animSpeed){
                 smooshArray[i].sX += smooshArray[i].sX_multiplier
                 if(smooshArray[i].sX > (smooshArray[i].sX_multiplier * (smooshArray[i].totalFrames - 1))){
                     console.log((smooshArray[i].sX_multiplier * (smooshArray[i].totalFrames - 1)))
-                    // smooshArray[i].sX = 0
-
                 }
                 smooshArray[i].framesDrawn = 0
-                //Remove the smoosh after animation plays out
-                smooshArray.splice(i, 1)
             }
         }
     }
