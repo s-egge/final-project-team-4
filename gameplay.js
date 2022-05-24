@@ -43,12 +43,12 @@ var Spider = {
     animSpeed: 16
 }
 /* Smoosh object. width/height Scale is weighted depending on frames in
-spritesheet (16h x 128w). i.e., width scale is 0.75 because overall spritesheet
-width is 128. 128 * 0.25 = 32 (px), height scale is 3. 2 * 16 = 32 (px). Square. */
+spritesheet (16h x 128w). i.e., width scale is 0.375 because overall spritesheet
+width is 128. 128 * 0.375 = 48 (px), height scale is 3. 3 * 16 = 48 (px). Square. */
 var SpiderSmoosh = {
     imageSrc: "./images/smoosh_spritesheet2.png",
-    widthScale: 0.25,
-    heightScale: 2,
+    widthScale: 0.375,
+    heightScale: 3,
     totalFrames: 8,
     sX_multiplier: 16,
     animSpeed: 3
