@@ -143,6 +143,7 @@ function createSmoosh(x, y) {
         s.smooshX = x
         s.smooshY = y
         smooshArray.push(s)
+        // console.log("==smooshArray count: ", smooshArray.length);
         s.drawSmoosh()
     }
 }
@@ -183,7 +184,7 @@ function moveBugs(){
             if(bugArray[i].framesDrawn > 20){
                 bugArray[i].sX += bugArray[i].sX_multiplier
                 if(bugArray[i].sX > (bugArray[i].sX_multiplier * (bugArray[i].totalFrames - 1))){
-                    console.log((bugArray[i].sX_multiplier * (bugArray[i].totalFrames - 1)))
+                    // console.log((bugArray[i].sX_multiplier * (bugArray[i].totalFrames - 1)))
                     bugArray[i].sX = 0
 
                 }
@@ -212,6 +213,8 @@ function animSmoosh(){
 
                 }
                 smooshArray[i].framesDrawn = 0
+                //Remove the smoosh after animation plays out
+                smooshArray.splice(i, 1)
             }
         }
     }
