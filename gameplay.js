@@ -5,6 +5,7 @@ canvas.width = window.innerWidth
 canvas.height = window.innerHeight
 
 var bugArray = []
+var smooshArray = []
 
 var score = 0
 var health = 9999
@@ -40,7 +41,51 @@ var Spider = {
     totalFrames: 4,
     sX_multiplier: 16
 }
+//Smoosh object
+var SpiderSmoosh = {
+    imageSrc: "./images/smoosh_spritesheet.png",
+    widthScale: .5,
+    heightScale: 2.5,
+    totalFrames: 4,
+    sX_multiplier: 16,
+}
+/*
+ * Main Smoosh class. Only one smoosh type right now. input smooshX,Y input from
+ * bug on the click event
+ */
+class Smoosh {
+    constructor({ imageSrc, widthScale, heightScale, totalFrames, sX_multiplier, smooshX, smooshY }){
+        this.smooshX = smooshX
+        this.smooshY = smooshY
+        this.sX = 0
 
+        this.img = new Image()
+        this.img.src = imageSrc
+        this.framesDrawn = 0
+
+        this.widthScale = widthScale
+        this.heightScale = heightScale
+        this.totalFrames = totalFrames
+        this.sX_multiplier = sX_multiplier
+    }
+    // Creates a smoosh image where bug was killed
+    drawSmoosh(){
+        c.drawImage(
+            this.img,
+            this.sX,
+            0,
+            this.img.width / this.totalFrames,
+            this.img.height,
+            this.smooshX,
+            this.smooshY,
+            (this.img.width * this.widthScale),
+            (this.img.height * this.heightScale),
+        )
+    }
+    anim() {
+        this.framesDrawn++;
+    }
+}
 /**
  * Main bug class. Abstraction allows for input of different insect objects.
  */
@@ -60,9 +105,7 @@ class Bug {
         this.sX_multiplier = sX_multiplier
     }
     destructor(){
-      this.img.src = './images/smoosh_16x64.png'
-      this.sX = 0
-      this.framesDrawn = 0
+      // smooshBug(this.x, this.y)
     }
     move(){
         this.y += this.speedY
@@ -92,6 +135,17 @@ function createBug(insect) {
         i.spawnBug()
     }
 }
+// creates a new smoosh object and pushes it into the main smoosh array
+function createSmoosh(x, y) {
+    // console.log("createSmoosh method called");
+    if (!(game_paused)) {
+        var s = new Smoosh(SpiderSmoosh)
+        s.smooshX = x
+        s.smooshY = y
+        smooshArray.push(s)
+        s.drawSmoosh()
+    }
+}
 
 // changes game state based on pause button
 var pause_button = document.getElementsByClassName('pause_button')[0]
@@ -118,20 +172,20 @@ var interval = setInterval(createBug, spawnInterval)
 
 /**
  * Will move each bug in the bug array, and delete the bug if it reaches the bottom of the screen
- * This function will also animate the bugs by increasing bug.sX. 
+ * This function will also animate the bugs by increasing bug.sX.
  */
 function moveBugs(){
     if (!(game_paused)) {
         for(var i = 0; i < bugArray.length; i++){
             bugArray[i].move()
             bugArray[i].spawnBug()
-            
+
             if(bugArray[i].framesDrawn > 20){
                 bugArray[i].sX += bugArray[i].sX_multiplier
                 if(bugArray[i].sX > (bugArray[i].sX_multiplier * (bugArray[i].totalFrames - 1))){
                     console.log((bugArray[i].sX_multiplier * (bugArray[i].totalFrames - 1)))
                     bugArray[i].sX = 0
-                    
+
                 }
                 bugArray[i].framesDrawn = 0
             }
@@ -139,17 +193,35 @@ function moveBugs(){
                 health -= 1
                 bugArray.splice(i, 1)
             }
-            
-            
         }
     }
 }
+/*
+ * This function animates the smoosh graphic spiritesheet in 16px frames.
+ */
+function animSmoosh(){
+    if (!(game_paused)) {
+        for(var i = 0; i < smooshArray.length; i++){
+            smooshArray[i].anim()
+            smooshArray[i].drawSmoosh()
+            if(smooshArray[i].framesDrawn > 2){
+                smooshArray[i].sX += smooshArray[i].sX_multiplier
+                if(smooshArray[i].sX > (smooshArray[i].sX_multiplier * (smooshArray[i].totalFrames - 1))){
+                    console.log((smooshArray[i].sX_multiplier * (smooshArray[i].totalFrames - 1)))
+                    // smooshArray[i].sX = 0
 
+                }
+                smooshArray[i].framesDrawn = 0
+            }
+        }
+    }
+}
 
 // the main animation function
 function animate(){
     c.clearRect(0, 0, canvas.width, canvas.height)
     moveBugs()
+    animSmoosh()
     drawHealth()
     drawScore()
     if(health > 0) {
@@ -168,6 +240,7 @@ document.addEventListener('click', onClickBug)
 function onClickBug(event){
     for(var i = 0; i < bugArray.length; i++){
         if(isPointValid(bugArray[i], event.x, event.y)){
+            createSmoosh(bugArray[i].x, bugArray[i].y)
             bugArray.splice(i, 1)
             score += 10
         }
