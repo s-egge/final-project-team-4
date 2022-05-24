@@ -40,7 +40,22 @@ var Spider = {
     widthScale: .5,
     heightScale: 2.5,
     totalFrames: 4,
+    row: 0,
     sX_multiplier: 16,
+    radius: 50,
+    animSpeed: 16
+}
+/**
+ * Lady bug object. The spritesheet has two rows, but the animation works well without worrying about that. 
+ */
+var Ladybug = {
+    imageSrc: "./images/__red_ladybird_fly.png",
+    widthScale: .015,
+    heightScale: .09,
+    totalFrames: 4,
+    row: 750,
+    sX_multiplier: 1050,
+    radius: 100,
     animSpeed: 16
 }
 /* Smoosh object. width/height Scale is weighted depending on frames in
@@ -96,7 +111,7 @@ class Smoosh {
  * Main bug class. Abstraction allows for input of different insect objects.
  */
 class Bug {
-    constructor({ imageSrc, widthScale, heightScale, totalFrames, sX_multiplier, animSpeed }){
+    constructor({ imageSrc, widthScale, heightScale, totalFrames, row, sX_multiplier, animSpeed }){
         this.x = (Math.random() * (canvas.width - 100))
         this.sX = 0
         this.y = 10
@@ -104,6 +119,8 @@ class Bug {
         this.img = new Image()
         this.img.src = imageSrc
         this.framesDrawn = 0
+        
+        this.row = row
         this.animSpeed = animSpeed //frames per step through spritesheet
 
         this.widthScale = widthScale
@@ -123,7 +140,7 @@ class Bug {
         c.drawImage(
             this.img,
             this.sX,
-            0,
+            this.row,
             this.img.width / this.totalFrames,
             this.img.height,
             this.x,
@@ -134,10 +151,14 @@ class Bug {
     }
 }
 
+const bugType = [Spider, Ladybug]
+
+
 // creates a new bug object and pushes it into the main bug array
-function createBug(insect) {
+function createBug() {
     if (!(game_paused)) {
-        var i = new Bug(Spider)
+        var x = Math.floor(Math.random() * bugType.length)
+        var i = new Bug(bugType[x])
         bugArray.push(i)
         i.spawnBug()
     }
@@ -245,6 +266,7 @@ document.addEventListener('click', onClickBug)
 
 //Main click event function. Calls isPointValid to check whether click hits a bug, and resets spawn interval if score hits a certain thershold
 function onClickBug(event){
+    console.log(event.x + ", " + event.y)
     for(var i = 0; i < bugArray.length; i++){
         if(isPointValid(bugArray[i], event.x, event.y)){
             createSmoosh(bugArray[i].x, bugArray[i].y)
@@ -262,9 +284,10 @@ function onClickBug(event){
 
 //uses distance formula to determine if point is within bugs radius
 function isPointValid(bug, x, y){
-    var bugX = bug.x + bug.sX
-    var bugY = bug.y
-    var radius = 50
+    var bugX = bug.x
+    var bugY = bug.y 
+    var radius = 100
+    
     var d = Math.sqrt(Math.pow((x - bugX), 2) + Math.pow((y - bugY), 2))
     return(d <= radius)
 }
