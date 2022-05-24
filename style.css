@@ -140,6 +140,10 @@ main#homepage{
     max-width: 200px;
     background-color: #8B74BD;
 }
+#input-submit-button{
+    max-width: 200px;
+    background-color: #8B74BD;
+}
 
 button{
     margin: 16px;
@@ -286,6 +290,46 @@ button:hover{
     padding: 10px;
     box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.25);
 }
+
+
+/*----- Game over modal -----*/
+#win-modal > .modal-contents > .modal-body{
+    display: flex;
+    flex-direction: column;
+}
+.game-over-text{
+    align-self: center;
+    font-size: 40px;
+    padding: 0px;
+}
+.win-modal-text{
+    font-size: 26px;
+    padding: 10px;
+    padding-left: 20px;
+}
+.player-input-element{
+    font-size: 26px;
+    padding-left: 20px;
+    align-self: center;
+}
+input{
+    align-self: center;
+    padding: 8px;
+    color: black;
+}
+#input-submit-button{
+    padding: 4px;
+}
+#sandwich-gif{
+    max-width: 300px;
+    width: 100%;
+    align-self: center;
+}
+.score-text{
+    font-size: 26px;
+    align-self: center;
+}
+
 
 .animate-fading {
     /* For pause screen animation */

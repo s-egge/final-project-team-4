@@ -20,5 +20,23 @@
             <p class="animate-fading">Game Paused</p>
             <button id="home-button">Return Home</button>
         </div>
+
+        <div id="win-modal" class="hidden modal-skeleton">
+            <div class="modal-contents">
+                <p class="game-over-text animate-fading">Game over!</p>
+                <img id="sandwich-gif" src="./images/sub_sandwich_spider_crawl.gif" alt="Sandwich with a spider crawling across it.">
+                <div class="win-modal-text">
+                    Your picnic was overrun with bugs, but you made it into the top ten! 
+                    Please enter your name below: 
+                </div>                
+                <div class="player-input-element">
+                    <label for="player-input"></label>
+                    <input type="text" id="player-input" maxlength="10">
+                    <button id="input-submit-button">Submit</button>
+                </div>
+                <div class="score-text">
+                    <p>Your Score: 1234</p>
+                </div>  
+            </div>
     </body>
 </html>
