@@ -41,7 +41,7 @@ var Spider = {
     totalFrames: 4,
     column: 0,
     sX_multiplier: 16,
-    radius: 50
+    radius: 50,
     animSpeed: 16
 }
 
@@ -52,7 +52,7 @@ var Ladybug = {
     totalFrames: 4,
     column: 750,
     sX_multiplier: 1050,
-    radius: 100
+    radius: 100,
     animSpeed: 16
 }
 /* Smoosh object. width/height Scale is weighted depending on frames in
