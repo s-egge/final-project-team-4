@@ -1,7 +1,20 @@
+*{
+  font-family:"Lucida Console";
+}
 body {
     color: white;
     margin: 0px;
+    font-weight: normal;
 }
+
+/* @font-face {
+    font-family: 'Ataturk';
+    font-style: normal;
+    font-weight: normal;
+    src: url('font/ataturk.eot');
+    src: local('Ataturk Regular'), url('font/ataturk.ttf') format('truetype'),
+    url('font/ataturk.woff') format('woff');
+} */
 
 #canvas-1 {
     margin: 0px;

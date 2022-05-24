@@ -105,7 +105,7 @@ class Bug {
         this.sX_multiplier = sX_multiplier
     }
     destructor(){
-      // smooshBug(this.x, this.y)
+      // createSmoosh(this.x, this.y)
     }
     move(){
         this.y += this.speedY
