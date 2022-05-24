@@ -136,13 +136,13 @@ main#homepage{
 #settings-button{
     color: white;
 }
-#home-button{
-    max-width: 200px;
-    background-color: #8B74BD;
-}
 #input-submit-button{
     max-width: 200px;
     background-color: #8B74BD;
+}
+#play-again-button{
+    max-width: 200px;
+    background-color:#8B74BD;
 }
 
 button{
@@ -156,6 +156,11 @@ button{
     font-weight: bold;
     box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.25);
     font-size: 18px;
+}
+
+button.return-home-button{
+    max-width: 200px;
+    background-color: #8B74BD;
 }
 
 button:hover{
@@ -272,7 +277,7 @@ button:hover{
     transform: scale(110%);
 }
 
-#game_paused_screen {
+.small-modal {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -291,6 +296,15 @@ button:hover{
     box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.25);
 }
 
+#input-submitted-screen{
+    font-size: 24px;
+    z-index: 2;
+    text-align: center;
+}
+#input-submitted-buttons{
+    display: flex;
+}
+
 
 /*----- Game over modal -----*/
 #win-modal > .modal-contents > .modal-body{
@@ -306,6 +320,7 @@ button:hover{
     font-size: 26px;
     padding: 10px;
     padding-left: 20px;
+    text-align: center;
 }
 .player-input-element{
     font-size: 26px;

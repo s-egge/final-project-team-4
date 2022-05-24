@@ -13,11 +13,12 @@ var health = 9999
 var game_paused = false
 var window_focused = true
 
-var homeButton = document.getElementById('home-button')
-
-homeButton.addEventListener('click', function(){
-    window.location.href='./index.html'
-})
+var homeButtons = document.querySelectorAll('.return-home-button')
+for(var i = 0; i < homeButtons.length; i++){
+    homeButtons[i].addEventListener('click', function(){
+        window.location.href='./index.html'
+    })
+} 
 
 //draws score in top right
 
@@ -233,6 +234,7 @@ function animate(){
         requestAnimationFrame(animate)
     }else{
         clearInterval(interval)
+        gameOver()
     }
 }
 
@@ -284,3 +286,29 @@ function pause_if_unfocused() {
 }
 
 var check_focus_interval = setInterval(pause_if_unfocused, 500)
+
+
+
+
+/*-----------Score / gameover handling-----------*/
+function gameOver(){
+    document.getElementById('win-modal').classList.remove('hidden')
+    document.getElementById('modal-backdrop').classList.remove('hidden')
+
+    var scoreTextElement = document.querySelector('.score-text')
+    var scoreText = document.createTextNode(score)
+        scoreTextElement.appendChild(scoreText)
+}
+
+var inputSubmitButton = document.getElementById('input-submit-button')
+inputSubmitButton.addEventListener('click', function(){
+    var playerInput = document.getElementById('player-input')
+    var playerName = playerInput.value
+    document.getElementById('input-submitted-screen').classList.remove('hidden')
+    document.getElementById('win-modal').classList.add('hidden')
+    
+    var playAgain = document.getElementById('play-again-button')
+    playAgain.addEventListener('click', function(){
+        location.reload()
+    })
+})
