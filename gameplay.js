@@ -6,6 +6,7 @@ canvas.height = window.innerHeight
 
 var bugArray = []
 var smooshArray = []
+var foodArray = []
 
 var score = 0
 var health = 9999
@@ -52,6 +53,14 @@ var SpiderSmoosh = {
     totalFrames: 8,
     sX_multiplier: 16,
     animSpeed: 3
+}
+
+var Sandwich = {
+    imgSrc: "./images/blackBox.png",
+    type: "sandwich",
+    health: 0,
+    width: 128,
+    height: 128
 }
 /*
  * Main Smoosh class. Only one smoosh type right now. input smooshX,Y input from
@@ -133,6 +142,33 @@ class Bug {
     }
 }
 
+/* generic food class */
+class Food {
+    constructor({ imgSrc, type, health, width, height }){
+        this.x = 512
+        this.y = 512
+        this.type = type
+        this.health = health
+        this.framesDrawn = 0
+
+        this.img = new Image()
+        this.img.src = imageSrc
+        this.width = width
+        this.height = height
+    }
+    anim(){
+        this.framesDrawn++
+    }
+    drawFood(){
+      c.drawImage(
+          this.img,
+          this.x,
+          this.y,
+          this.width,
+          this.height
+        )
+    }
+}
 // creates a new bug object and pushes it into the main bug array
 function createBug(insect) {
     if (!(game_paused)) {
@@ -149,11 +185,27 @@ function createSmoosh(x, y) {
         s.smooshX = x
         s.smooshY = y
         smooshArray.push(s)
-        console.log("==smooshArray count: ", smooshArray.length);
+        console.log("==smooshArray count: ", smooshArray.length)
         s.drawSmoosh()
     }
 }
+/*creates a food object */
+function createFood() {
+    if (!(game_paused)) {
+        var food = new Food(Sandwich)
+        foodArray.push(food)
+        console.log("==foodArray count: ", foodArray.length)
+        food.drawFood()
+    }
+}
 
+function drawFood() {
+    if (!(game_paused)) {
+        for(var i = 0; i < foodArray.length; i++){
+            foodArray[i].drawFood()
+        }
+    }
+}
 // changes game state based on pause button
 var pause_button = document.getElementsByClassName('pause_button')[0]
 // if game is paused, unpause it, if game is unpaused, pause it
@@ -229,6 +281,8 @@ function animate(){
     animSmoosh()
     drawHealth()
     drawScore()
+    drawFood()
+
     if(health > 0) {
         requestAnimationFrame(animate)
     }else{
