@@ -8,14 +8,6 @@ body {
     font-weight: normal;
 }
 
-/* @font-face {
-    font-family: 'Ataturk';
-    font-style: normal;
-    font-weight: normal;
-    src: url('font/ataturk.eot');
-    src: local('Ataturk Regular'), url('font/ataturk.ttf') format('truetype'),
-    url('font/ataturk.woff') format('woff');
-} */
 
 #canvas-1 {
     margin: 0px;
@@ -68,13 +60,15 @@ main#homepage{
     display: flex;
     flex-direction: column;
     /* padding-bottom: 0; */
-    height: 100vh;
+    height: 100%;
     width: 100%;
     position: relative;
 }
 
 #game-name{
-    align-self: center;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
     padding: 12px;
     margin-left: 16px;
 }
@@ -107,8 +101,8 @@ main#homepage{
     width: 30%;
     display: flex;
     align-self: center;
-    padding-top: 10px;
-    padding-bottom: 120px;
+    justify-content: center;
+    /* padding-top: 10px; */
 }
 
 #picnic-img{
@@ -118,9 +112,10 @@ main#homepage{
 .button-container{
     display: flex;
     justify-content: center;
-    gap: 20px;
-    padding-top: 50px;
+    /* gap: 20px;
+    padding-top: 50px; */
     max-width: 100%;
+    height: max-content;
 }
 /* Button Id's for any customized styling */
 /* Only white font right now */
@@ -178,9 +173,10 @@ button:hover{
     background: url('./images/plaid.jpg');
     background-repeat: repeat;
     background-size: contain;
+    /* height: max-content; */
     width: 100%;
     /* height: 70px; */
-    padding-top: 30px;
+    padding-top: 20%;
 }
 
 /* IN-game pause button override and styling */
