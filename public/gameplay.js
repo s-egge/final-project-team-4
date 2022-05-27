@@ -18,7 +18,7 @@ for(var i = 0; i < homeButtons.length; i++){
     homeButtons[i].addEventListener('click', function(){
         window.location.href='./index.html'
     })
-} 
+}
 
 //draws score in top right
 
@@ -36,6 +36,7 @@ drawScore()
 
 //Spider object
 var Spider = {
+    type: "Spider",
     imageSrc: "./images/spider_spritesheet.png",
     widthScale: .5,
     heightScale: 2.5,
@@ -46,9 +47,10 @@ var Spider = {
     animSpeed: 16
 }
 /**
- * Lady bug object. The spritesheet has two rows, but the animation works well without worrying about that. 
+ * Lady bug object. The spritesheet has two rows, but the animation works well without worrying about that.
  */
 var Ladybug = {
+    type: "LadyBug",
     imageSrc: "./images/__red_ladybird_fly.png",
     widthScale: .015,
     heightScale: .09,
@@ -62,7 +64,16 @@ var Ladybug = {
 spritesheet (16h x 128w). i.e., width scale is 0.375 because overall spritesheet
 width is 128. 128 * 0.375 = 48 (px), height scale is 3. 3 * 16 = 48 (px). Square. */
 var SpiderSmoosh = {
-    imageSrc: "./images/smoosh_spritesheet2.png",
+    imageSrc: "./images/smooshSpider_spritesheet.png",
+    widthScale: 0.375,
+    heightScale: 3,
+    totalFrames: 8,
+    sX_multiplier: 16,
+    animSpeed: 3
+}
+
+var LadyBugSmoosh = {
+    imageSrc: "./images/smooshLadyBug_spritesheet.png",
     widthScale: 0.375,
     heightScale: 3,
     totalFrames: 8,
@@ -111,7 +122,8 @@ class Smoosh {
  * Main bug class. Abstraction allows for input of different insect objects.
  */
 class Bug {
-    constructor({ imageSrc, widthScale, heightScale, totalFrames, row, sX_multiplier, animSpeed }){
+    constructor({ type, imageSrc, widthScale, heightScale, totalFrames, row, sX_multiplier, animSpeed }){
+        this.type = type
         this.x = (Math.random() * (canvas.width - 100))
         this.sX = 0
         this.y = 10
@@ -119,7 +131,7 @@ class Bug {
         this.img = new Image()
         this.img.src = imageSrc
         this.framesDrawn = 0
-        
+
         this.row = row
         this.animSpeed = animSpeed //frames per step through spritesheet
 
@@ -127,9 +139,7 @@ class Bug {
         this.heightScale = heightScale
         this.totalFrames = totalFrames
         this.sX_multiplier = sX_multiplier
-    }
-    destructor(){
-      // createSmoosh(this.x, this.y)
+
     }
     move(){
         this.y += this.speedY
@@ -149,6 +159,24 @@ class Bug {
             (this.img.height * this.heightScale),
         )
     }
+    // creates a new smoosh object and pushes it into the main smoosh array
+    smooshBug(){
+      console.log("==smooshBug called. Type: ", this.type);
+      if (!(game_paused)) {
+          switch(this.type){
+            case "Spider":
+              var smoosh = new Smoosh(SpiderSmoosh)
+              break;
+            case "LadyBug":
+              var smoosh = new Smoosh(LadyBugSmoosh)
+              break;
+          }
+          smoosh.smooshX = this.x
+          smoosh.smooshY = this.y
+          smooshArray.push(smoosh)
+          smoosh.drawSmoosh()
+      }
+    }
 }
 
 const bugType = [Spider, Ladybug]
@@ -161,18 +189,6 @@ function createBug() {
         var i = new Bug(bugType[x])
         bugArray.push(i)
         i.spawnBug()
-    }
-}
-// creates a new smoosh object and pushes it into the main smoosh array
-function createSmoosh(x, y) {
-    // console.log("createSmoosh method called");
-    if (!(game_paused)) {
-        var s = new Smoosh(SpiderSmoosh)
-        s.smooshX = x
-        s.smooshY = y
-        smooshArray.push(s)
-        console.log("==smooshArray count: ", smooshArray.length);
-        s.drawSmoosh()
     }
 }
 
@@ -269,7 +285,8 @@ function onClickBug(event){
     console.log(event.x + ", " + event.y)
     for(var i = 0; i < bugArray.length; i++){
         if(isPointValid(bugArray[i], event.x, event.y)){
-            createSmoosh(bugArray[i].x, bugArray[i].y)
+            // createSmoosh(bugArray[i].x, bugArray[i].y)
+            bugArray[i].smooshBug()
             bugArray.splice(i, 1)
             score += 10
         }
@@ -285,9 +302,9 @@ function onClickBug(event){
 //uses distance formula to determine if point is within bugs radius
 function isPointValid(bug, x, y){
     var bugX = bug.x
-    var bugY = bug.y 
+    var bugY = bug.y
     var radius = 100
-    
+
     var d = Math.sqrt(Math.pow((x - bugX), 2) + Math.pow((y - bugY), 2))
     return(d <= radius)
 }
@@ -329,7 +346,7 @@ inputSubmitButton.addEventListener('click', function(){
     var playerName = playerInput.value
     document.getElementById('input-submitted-screen').classList.remove('hidden')
     document.getElementById('win-modal').classList.add('hidden')
-    
+
     var playAgain = document.getElementById('play-again-button')
     playAgain.addEventListener('click', function(){
         location.reload()
