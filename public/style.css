@@ -8,6 +8,10 @@ body {
     font-weight: normal;
 }
 
+html {
+    overflow: hidden;
+}
+
 /* @font-face {
     font-family: 'Ataturk';
     font-style: normal;
