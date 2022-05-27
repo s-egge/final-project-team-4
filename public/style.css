@@ -8,6 +8,10 @@ body {
     font-weight: normal;
 }
 
+html {
+    overflow: hidden;
+}
+
 
 #canvas-1 {
     margin: 0px;
