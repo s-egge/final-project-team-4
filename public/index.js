@@ -5,6 +5,27 @@ var guideButton = document.getElementById('guide-button')
 var guideModal = document.getElementById('guide-modal')
 var highScoreButton = document.getElementById('scores-button')
 var highScoreModal = document.getElementById('high-score-modal')
+var tableHeader = document.getElementById('table-header')
+var high_scores_table = document.getElementById('highscores-table')
+
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        scoreData = JSON.parse(this.responseText);
+        for (var i = 1; i <= Object.keys(scoreData).length; i++) {
+            var tr = high_scores_table.insertRow()
+            tr.classList.add('score-entry')
+            var place = tr.insertCell()
+            place.appendChild(document.createTextNode(scoreData[i].place))
+            var name = tr.insertCell()
+            name.appendChild(document.createTextNode(scoreData[i].name))
+            var score = tr.insertCell()
+            score.appendChild(document.createTextNode(scoreData[i].score))
+        }
+    }
+};
+xhttp.open("GET", "/scores", true);
+xhttp.send();
 
 startButton.addEventListener('click', function(){
     window.location.href='/gameplay'
