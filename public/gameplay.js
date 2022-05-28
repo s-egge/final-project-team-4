@@ -8,7 +8,7 @@ var bugArray = []
 var smooshArray = []
 
 var score = 0
-var health = 9999
+var health = 10
 
 var game_paused = false
 var window_focused = true
@@ -342,8 +342,15 @@ function gameOver(){
 
 var inputSubmitButton = document.getElementById('input-submit-button')
 inputSubmitButton.addEventListener('click', function(){
+
     var playerInput = document.getElementById('player-input')
     var playerName = playerInput.value
+
+    var username_request = new XMLHttpRequest()
+    username_request.open("POST", "/gameover", true)
+    username_request.setRequestHeader('Content-Type', 'application/json')
+    username_request.send(JSON.stringify({username: playerName, score: score}))
+    
     document.getElementById('input-submitted-screen').classList.remove('hidden')
     document.getElementById('win-modal').classList.add('hidden')
 

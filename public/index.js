@@ -7,7 +7,7 @@ var highScoreButton = document.getElementById('scores-button')
 var highScoreModal = document.getElementById('high-score-modal')
 
 startButton.addEventListener('click', function(){
-    window.location.href='./gameplay.html'
+    window.location.href='/gameplay'
 })
 
 guideButton.addEventListener('click', function(){
