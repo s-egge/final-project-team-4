@@ -27,17 +27,17 @@
             <p>What would you like to do next?</p>
             <div id="input-submitted-buttons">
                 <button class="return-home-button">Return Home</button>
-                <button  id="play-again-button">Play Again</button>
+                <button  class="play-again-button">Play Again</button>
             </div>
         </div>
 
         <div id="modal-backdrop" class="hidden"></div>
 
-        <div id="win-modal" class="hidden modal-skeleton">
+        <div id="win-modal" class="hidden modal-skeleton gameover-modal">
             <div class="modal-contents">
                 <p class="game-over-text animate-fading">Game over!</p>
                 <img id="sandwich-gif" src="./images/sub_sandwich_spider_crawl.gif" alt="Sandwich with a spider crawling across it.">
-                <div class="win-modal-text">
+                <div class="win-lose-modal-text">
                     Your picnic was overrun with bugs, but you made it into the top ten! 
                     Please enter your name below: 
                 </div>                
@@ -50,6 +50,23 @@
                     Your Score: 
                 </div>  
             </div>
+        </div>
 
+        <div id="lose-modal" class="hidden modal-skeleton gameover-modal">
+            <div class="modal-contents">
+                <p class="game-over-text animate-fading">Game over!</p>
+                <img id="sandwich-gif" src="./images/sub_sandwich_spider_crawl.gif" alt="Sandwich with a spider crawling across it.">
+                <div class="win-lose-modal-text">
+                    Your picnic was overrun with bugs! You didn't make it onto
+                    the leaderboard, better luck next time!
+                </div>      
+                <div class="score-text">
+                    Your Score: 
+                </div>            
+                <div id="lose-modal-buttons">             
+                    <button class="return-home-button">Return Home</button>
+                    <button  class="play-again-button">Play Again</button>
+                </div> 
+            </div>
     </body>
 </html>

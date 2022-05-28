@@ -8,7 +8,7 @@ var bugArray = []
 var smooshArray = []
 
 var score = 0
-var health = 10
+var health = 2
 
 var game_paused = false
 var window_focused = true
@@ -17,6 +17,13 @@ var homeButtons = document.querySelectorAll('.return-home-button')
 for(var i = 0; i < homeButtons.length; i++){
     homeButtons[i].addEventListener('click', function(){
         window.location.href='./index.html'
+    })
+}
+
+var playAgainButtons = document.querySelectorAll('.play-again-button')
+for(var i = 0; i < playAgainButtons.length; i++){
+    playAgainButtons[i].addEventListener('click', function(){
+        location.reload()
     })
 }
 
@@ -332,10 +339,53 @@ var check_focus_interval = setInterval(pause_if_unfocused, 500)
 
 /*-----------Score / gameover handling-----------*/
 function gameOver(){
+    var placeNum = 0;
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            //grab scoreData from JSON file and check if user made it
+            //into the leaderboard
+            scoreData = JSON.parse(this.responseText);
+            for (var i = 1; i <= Object.keys(scoreData).length; i++) {
+                if(scoreData[i].score < score){
+                    console.log('PlaceNum: ' + placeNum)
+                    placeNum = i;
+                    console.log('PlaceNum: ' + placeNum)
+                    console.log('|---made ' + i + ' place!')
+                    break;
+                }
+            }
+
+            console.log('PlaceNum: ' + placeNum)
+            //call gameover modal based on if they made leaderboard or not
+            if(placeNum > 0){
+                madeHighScore(placeNum)
+            } else{
+                noHighScore()
+            }
+        }
+    };
+    xhttp.open("GET", "/scores", true);
+    xhttp.send();
+}
+
+function madeHighScore(placeNum){
+    console.log("Inside madeHighScore")
     document.getElementById('win-modal').classList.remove('hidden')
     document.getElementById('modal-backdrop').classList.remove('hidden')
 
-    var scoreTextElement = document.querySelector('.score-text')
+    var scoreTextElement = document.getElementById('win-modal').querySelector('.score-text')
+    var scoreText = document.createTextNode(score)
+        scoreTextElement.appendChild(scoreText)
+}
+
+function noHighScore(){
+    console.log("Inside noHighScore")
+    document.getElementById('lose-modal').classList.remove('hidden')
+    document.getElementById('modal-backdrop').classList.remove('hidden')
+
+    var scoreTextElement = document.getElementById('lose-modal').querySelector('.score-text')
     var scoreText = document.createTextNode(score)
         scoreTextElement.appendChild(scoreText)
 }
@@ -346,16 +396,15 @@ inputSubmitButton.addEventListener('click', function(){
     var playerInput = document.getElementById('player-input')
     var playerName = playerInput.value
 
-    var username_request = new XMLHttpRequest()
-    username_request.open("POST", "/gameover", true)
-    username_request.setRequestHeader('Content-Type', 'application/json')
-    username_request.send(JSON.stringify({username: playerName, score: score}))
-    
-    document.getElementById('input-submitted-screen').classList.remove('hidden')
-    document.getElementById('win-modal').classList.add('hidden')
-
-    var playAgain = document.getElementById('play-again-button')
-    playAgain.addEventListener('click', function(){
-        location.reload()
-    })
+    if(!playerName){
+        alert('Please input a name for the scoreboard!')
+    } else {
+        var username_request = new XMLHttpRequest()
+        username_request.open("POST", "/gameover", true)
+        username_request.setRequestHeader('Content-Type', 'application/json')
+        username_request.send(JSON.stringify({username: playerName, score: score}))
+        
+        document.getElementById('input-submitted-screen').classList.remove('hidden')
+        document.getElementById('win-modal').classList.add('hidden')
+    }
 })

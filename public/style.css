@@ -141,7 +141,7 @@ main#homepage{
     max-width: 200px;
     background-color: #8B74BD;
 }
-#play-again-button{
+.play-again-button{
     max-width: 200px;
     background-color:#8B74BD;
 }
@@ -309,7 +309,7 @@ button:hover{
 
 
 /*----- Game over modal -----*/
-#win-modal > .modal-contents > .modal-body{
+.gameover-modal > .modal-contents > .modal-body{
     display: flex;
     flex-direction: column;
 }
@@ -318,7 +318,7 @@ button:hover{
     font-size: 40px;
     padding: 0px;
 }
-.win-modal-text{
+.win-lose-modal-text{
     font-size: 26px;
     padding: 10px;
     padding-left: 20px;
@@ -344,6 +344,10 @@ input{
 }
 .score-text{
     font-size: 26px;
+    align-self: center;
+}
+
+#lose-modal-buttons{
     align-self: center;
 }
 
