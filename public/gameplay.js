@@ -339,7 +339,7 @@ var check_focus_interval = setInterval(pause_if_unfocused, 500)
 
 /*-----------Score / gameover handling-----------*/
 function gameOver(){
-    var placeNum = 0;
+    var placeNum = 1;
 
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
@@ -347,15 +347,15 @@ function gameOver(){
             //grab scoreData from JSON file and check if user made it
             //into the leaderboard
             scoreData = JSON.parse(this.responseText);
-            for (var i = 1; i <= Object.keys(scoreData).length; i++) {
-                if(scoreData[i].score < score){
-                    console.log('PlaceNum: ' + placeNum)
-                    placeNum = i;
-                    console.log('PlaceNum: ' + placeNum)
-                    console.log('|---made ' + i + ' place!')
-                    break;
-                }
-            }
+            // for (var i = 1; i <= Object.keys(scoreData).length; i++) {
+            //     if(scoreData[i].score < score){
+            //         console.log('PlaceNum: ' + placeNum)
+            //         placeNum = i;
+            //         console.log('PlaceNum: ' + placeNum)
+            //         console.log('|---made ' + i + ' place!')
+            //         break;
+            //     }
+            // }
 
             console.log('PlaceNum: ' + placeNum)
             //call gameover modal based on if they made leaderboard or not
