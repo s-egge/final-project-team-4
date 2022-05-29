@@ -26,6 +26,9 @@ app.get("/gameplay", function(req, res) {
 app.post("/gameover", function(req, res, next) { // push scores to DB if in top 10
     var json_obj = {}
     if (req.body.username && req.body.score) {
+        if (filter.isProfane(req.body.username)) {
+            return
+        }
         Object.assign(scores, {[req.body.username]: req.body.score})
     }
     var sorted_keys = Object.keys(scores).sort(function(a,b){
