@@ -20,11 +20,10 @@ app.get("/", function(req, res) {
 })
 
 app.get("/gameplay", function(req, res) {
-    console.log("Serving gameplay")
     res.status(200).sendFile(path.join(__dirname, 'public/gameplay.html'))
 })
 
-app.post("/gameover", function(req, res, next) {
+app.post("/gameover", function(req, res, next) { // push scores to DB if in top 10
     var json_obj = {}
     if (req.body.username && req.body.score) {
         Object.assign(scores, {[req.body.username]: req.body.score})
@@ -40,19 +39,25 @@ app.post("/gameover", function(req, res, next) {
             json_obj[top_10[i]] = scores[top_10[i]]
         }
     }
-    console.log(JSON.stringify(json_obj))
     fs.writeFile('scores.json', JSON.stringify(json_obj), error => {
         if (error) throw error
     })
 })
 
 app.get("/scores", function(req, res) {
-    console.log("Recieved")
     res.status(200).send(scores)
 })
 
-app.post("/newscore", function(req, res) {
-    res.status(200)
+app.post("/istop", function(req, res) { // GET request to /istop with a score returns true or false
+    var score_values = Object.keys(scores).map(function(key) {
+        return scores[key]
+    })
+    score_values.sort((a,b) => b-a)
+    if (req.body.score > score_values[9]) {
+        res.status(200).send(true)
+    } else {
+        res.status(200).send(false)
+    }
 })
 
 app.listen(port, function() {
