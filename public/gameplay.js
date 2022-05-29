@@ -339,38 +339,25 @@ var check_focus_interval = setInterval(pause_if_unfocused, 500)
 
 /*-----------Score / gameover handling-----------*/
 function gameOver(){
-    var placeNum = 0;
-
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
+    var top_10_request = new XMLHttpRequest()
+    top_10_request.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             //grab scoreData from JSON file and check if user made it
             //into the leaderboard
-            scoreData = JSON.parse(this.responseText);
-            for (var i = 1; i <= Object.keys(scoreData).length; i++) {
-                if(scoreData[i].score < score){
-                    console.log('PlaceNum: ' + placeNum)
-                    placeNum = i;
-                    console.log('PlaceNum: ' + placeNum)
-                    console.log('|---made ' + i + ' place!')
-                    break;
-                }
-            }
-
-            console.log('PlaceNum: ' + placeNum)
-            //call gameover modal based on if they made leaderboard or not
-            if(placeNum > 0){
-                madeHighScore(placeNum)
+            var is_top_10 = this.responseText
+            if(is_top_10 == "true"){
+                madeHighScore()
             } else{
                 noHighScore()
             }
         }
     };
-    xhttp.open("GET", "/scores", true);
-    xhttp.send();
+    top_10_request.open("POST", "/istop", true)
+    top_10_request.setRequestHeader('Content-Type', 'application/json')
+    top_10_request.send(JSON.stringify({score: score}))
 }
 
-function madeHighScore(placeNum){
+function madeHighScore(){
     console.log("Inside madeHighScore")
     document.getElementById('win-modal').classList.remove('hidden')
     document.getElementById('modal-backdrop').classList.remove('hidden')

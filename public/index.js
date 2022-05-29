@@ -12,15 +12,15 @@ var xhttp = new XMLHttpRequest();
 xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
         scoreData = JSON.parse(this.responseText);
-        for (var i = 1; i <= Object.keys(scoreData).length; i++) {
+        for (var i = 0; i < Object.keys(scoreData).length; i++) {
             var tr = high_scores_table.insertRow()
             tr.classList.add('score-entry')
             var place = tr.insertCell()
-            place.appendChild(document.createTextNode(scoreData[i].place))
+            place.appendChild(document.createTextNode(i+1))
             var name = tr.insertCell()
-            name.appendChild(document.createTextNode(scoreData[i].name))
+            name.appendChild(document.createTextNode(Object.keys(scoreData)[i]))
             var score = tr.insertCell()
-            score.appendChild(document.createTextNode(scoreData[i].score))
+            score.appendChild(document.createTextNode(scoreData[Object.keys(scoreData)[i]]))
         }
     }
 };
