@@ -8,7 +8,7 @@ var bugArray = []
 var smooshArray = []
 
 var score = 0
-var health = 2
+var health = 10
 
 var game_paused = false
 var window_focused = true
@@ -168,7 +168,6 @@ class Bug {
     }
     // creates a new smoosh object and pushes it into the main smoosh array
     smooshBug(){
-      console.log("==smooshBug called. Type: ", this.type);
       if (!(game_paused)) {
           switch(this.type){
             case "Spider":
@@ -258,9 +257,6 @@ function animSmoosh(){
             smooshArray[i].drawSmoosh()
             if(smooshArray[i].framesDrawn > smooshArray[i].animSpeed){
                 smooshArray[i].sX += smooshArray[i].sX_multiplier
-                if(smooshArray[i].sX > (smooshArray[i].sX_multiplier * (smooshArray[i].totalFrames - 1))){
-                    console.log((smooshArray[i].sX_multiplier * (smooshArray[i].totalFrames - 1)))
-                }
                 smooshArray[i].framesDrawn = 0
             }
         }
@@ -289,7 +285,6 @@ document.addEventListener('click', onClickBug)
 
 //Main click event function. Calls isPointValid to check whether click hits a bug, and resets spawn interval if score hits a certain thershold
 function onClickBug(event){
-    console.log(event.x + ", " + event.y)
     for(var i = 0; i < bugArray.length; i++){
         if(isPointValid(bugArray[i], event.x, event.y)){
             // createSmoosh(bugArray[i].x, bugArray[i].y)
@@ -299,7 +294,12 @@ function onClickBug(event){
         }
     }
     if((score % 100 === 0 && score !== 0) && health > 0){
-        spawnInterval -= 50
+        if (spawnInterval > 150) {
+            spawnInterval *= .9
+        } else {
+            spawnInterval = 150
+        }
+        console.log("SPAWN INTERVAL: ", spawnInterval)
         clearInterval(interval)
         interval = setInterval(createBug, spawnInterval)
     }
