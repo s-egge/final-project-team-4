@@ -27,6 +27,27 @@ for(var i = 0; i < playAgainButtons.length; i++){
     })
 }
 
+//render picnic food
+var sandwich = new Image()
+sandwich.src = "./images/sub_sandwich.png"
+var pie = new Image()
+pie.src = "./images/pie.png"
+var watermelon = new Image()
+watermelon.src = "./images/watermelon.png"
+var blanket = new Image()
+blanket.src = "./images/plaid.jpg"
+
+function drawPicnic(){
+    var w = canvas.width/6 - 40
+    var h = canvas.height - 100
+
+    c.drawImage(blanket, 0, h, canvas.width, blanket.height)
+    c.drawImage(sandwich, w, h + 20, sandwich.width * 3, sandwich.height * 2.5)
+    c.drawImage(watermelon, w*3, h, watermelon.width * 2, watermelon.height * 2)
+    c.drawImage(pie, w*5, h, pie.width * 2, pie.height * 2)
+}
+  
+
 //draws score in top right
 
 function drawScore() {
@@ -266,6 +287,7 @@ function animSmoosh(){
 // the main animation function
 function animate(){
     c.clearRect(0, 0, canvas.width, canvas.height)
+    drawPicnic()
     moveBugs()
     animSmoosh()
     drawHealth()
