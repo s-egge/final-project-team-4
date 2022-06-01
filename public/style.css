@@ -114,6 +114,18 @@ main#homepage{
     width: 100%;
 }
 
+.gameplayScreenShot{
+    width: 40%;
+    border-radius: 30%;
+    border: solid 4px #8B74BD;
+    margin-top: 5px;
+}
+
+#guide-images-div{
+    display: flex;
+    justify-content: space-around;
+}
+
 .button-container{
     display: flex;
     align-content: flex-end;
@@ -306,7 +318,6 @@ button:hover{
 #input-submitted-buttons{
     display: flex;
 }
-
 
 /*----- Game over modal -----*/
 .gameover-modal > .modal-contents > .modal-body{

@@ -23,7 +23,7 @@
                 <button id="start-button">Start</button>
                 <button id="guide-button">Guide</button>
                 <button id="scores-button">Highscores</button>
-                <button id="settings-button">Settings</button>
+                <button id="settings-button" class="hidden">Settings</button>
             </div>
 
             <div class="footer"></div>
@@ -37,9 +37,18 @@
                     <h3>How to play:</h3>
                 </div>
                 <div class="modal-body">
-                    <p>This is how you play the game</p>
-                    <p>-Insert picture of gameplay-</p>
-                    <p>More instructions on how to play</p>
+                    You've set up a picnic at the local park, but soon bugs start trying to
+                    overrun your food! Use your bug-swatter to keep them at bay, and try to
+                    hold them off for as long as possible!
+                    <ul>
+                        <li>Use your mouse to move the bug-swatter around the page, clicking on bugs to smoosh them.</li>
+                        <li>You lose a health point for each bug that makes it onto your picnic.</li>
+                        <li>The game ends when you lose all of your health.</li>
+                    </ul> 
+                    <div id="guide-images-div">
+                        <img class="gameplayScreenShot" src="./images/gameplay_1.png" alt="Gameplay screenshot.">
+                        <img class="gameplayScreenShot" src="./images/gameplay_2.png" alt="Gameplay screenshot.">
+                    </div>
                 </div>
                 <button class="close-modal-button">Close</button>
             </div>
