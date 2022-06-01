@@ -29,7 +29,7 @@ for(var i = 0; i < playAgainButtons.length; i++){
 
 //render picnic food
 var sandwich = new Image()
-sandwich.src = "./images/sub_sandwich.png"
+sandwich.src = "./images/sub_sandwich_partial.png"
 var pie = new Image()
 pie.src = "./images/pie.png"
 var watermelon = new Image()
@@ -42,9 +42,9 @@ function drawPicnic(){
     var h = canvas.height - 100
 
     c.drawImage(blanket, 0, h, canvas.width, blanket.height)
-    c.drawImage(sandwich, w, h + 20, sandwich.width * 3, sandwich.height * 2.5)
-    c.drawImage(watermelon, w*3, h, watermelon.width * 2, watermelon.height * 2)
-    c.drawImage(pie, w*5, h, pie.width * 2, pie.height * 2)
+    c.drawImage(sandwich, 0, h + 20, sandwich.width * 1, sandwich.height * 1)
+    c.drawImage(watermelon, w*2.5, h, watermelon.width * 1.75, watermelon.height * 1.75)
+    c.drawImage(pie, w*5, h, pie.width * 1.75, pie.height * 1.75)
 }
   
 
